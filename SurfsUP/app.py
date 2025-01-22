@@ -4,6 +4,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from flask import Flask, jsonify
 from sqlalchemy import create_engine
+import datetime as dt
 
 #################################################
 # Database Setup
@@ -58,8 +59,6 @@ def precipitation():
     order_by(measurement.date.desc()).first()
     str_recent = most_recent[0]
 
-
-
     precip = session.query(measurement.date, measurement.prcp).\
     filter(measurement.date >= one_year).\
     order_by(measurement.date).all()
@@ -67,7 +66,6 @@ def precipitation():
     most_recent_date = dt.datetime.strptime(str_recent, '%Y-%m-%d').date()
 
     one_year = most_recent_date - dt.timedelta(days=365)
-
 
     session.close()
 
