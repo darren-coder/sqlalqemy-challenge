@@ -72,8 +72,8 @@ def precipitation():
     all_measures = []
     for d, p in precip:
         last_12_mo_precip = {}
-        last_12_mo_precip['Date'] = d
-        last_12_mo_precip['Precipitation'] = p
+        last_12_mo_precip[0] = p
+        last_12_mo_precip[1] = d
         all_measures.append(last_12_mo_precip)
 
     return jsonify(all_measures)
