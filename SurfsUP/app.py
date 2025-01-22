@@ -83,8 +83,7 @@ def precipitation():
 
 # List of stations
 
-@app.route("/api/v1.0/stations")
-def stations():
+
 
 if __name__ == "__main__":
     app.run(debug=True)
