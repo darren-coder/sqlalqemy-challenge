@@ -49,7 +49,7 @@ def welcome():
 
 # Precipitation analysis
  
-@app.route("/api/v1.0/precipitation<br/")
+@app.route("/api/v1.0/precipitation")
 def precipitation():
 
     session = Session(engine)
