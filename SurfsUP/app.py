@@ -55,6 +55,10 @@ def precipitation():
 
     session = Session(engine)
 
+    most_recent_date = dt.datetime.strptime(str_recent, '%Y-%m-%d').date()
+
+    one_year = most_recent_date - dt.timedelta(days=365)
+
     most_recent = session.query(measurement.date).\
     order_by(measurement.date.desc()).first()
     str_recent = most_recent[0]
@@ -62,10 +66,6 @@ def precipitation():
     precip = session.query(measurement.date, measurement.prcp).\
     filter(measurement.date >= one_year).\
     order_by(measurement.date).all()
-
-    most_recent_date = dt.datetime.strptime(str_recent, '%Y-%m-%d').date()
-
-    one_year = most_recent_date - dt.timedelta(days=365)
 
     session.close()
 
