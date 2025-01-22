@@ -80,22 +80,22 @@ def precipitation():
 
 # List of stations
 
-@app.route("/api/v1.0/stations")
-def stations():
+# @app.route("/api/v1.0/stations")
+# def stations():
 
-    session = Session(engine)
+#     session = Session(engine)
 
-    list_stations = session.query(station.station, station.name).all()
+#     list_stations = session.query(station.station, station.name).all()
     
-    session.close()
+#     session.close()
     
-    all_stations = []
-    for s, n in list_stations:
-        station_dict = {}
-        station_dict[s] = n
-        all_stations.append(station_dict)
+#     all_stations = []
+#     for s, n in list_stations:
+#         station_dict = {}
+#         station_dict[s] = n
+#         all_stations.append(station_dict)
 
-    return jsonify(station_dict)
+#     return jsonify(all_stations)
 
 
 
