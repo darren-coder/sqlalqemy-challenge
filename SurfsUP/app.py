@@ -63,7 +63,7 @@ def precipitation():
 
     # one_year = most_recent_date - dt.timedelta(days=365)
 
-    one_year = dt.date(2017,08,23) - dt.timedelta(days=365)
+    one_year = dt.date(2017,8,23) - dt.timedelta(days=365)
 
 
 
