@@ -55,18 +55,15 @@ def precipitation():
 
     session = Session(engine)
 
-    # most_recent = session.query(measurement.date).\
-    # order_by(measurement.date.desc()).first()
-    # str_recent = most_recent[0]
+    most_recent = session.query(measurement.date).\
+    order_by(measurement.date.desc()).first()
+    str_recent = most_recent[0]
 
-    # most_recent_date = dt.datetime.strptime(str_recent, '%Y-%m-%d').date()
+    most_recent_date = dt.datetime.strptime(str_recent, '%Y-%m-%d').date()
 
-    # one_year = most_recent_date - dt.timedelta(days=365)
+    one_year = most_recent_date - dt.timedelta(days=365)
 
-    one_year = dt.date(2017,8,23) - dt.timedelta(days=365)
-
-
-
+    
     precip = session.query(measurement.date, measurement.prcp).\
     filter(measurement.date >= one_year).\
     order_by(measurement.date).all()
@@ -82,6 +79,25 @@ def precipitation():
     return jsonify(all_measures)
 
 # List of stations
+
+@app.route("/api/v1.0/stations")
+def stations():
+
+    session = Session(engine)
+
+    list_stations = session.query(station.station, station.name).all()
+    
+    session.close()
+    
+    all_stations = []
+    for s, n in list_stations:
+        station_dict = {}
+        station_dict[s] = n
+        all_stations.append(station_dict)
+
+    return jsonify(station_dict)
+
+
 
 
 
