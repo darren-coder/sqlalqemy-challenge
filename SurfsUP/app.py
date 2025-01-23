@@ -97,23 +97,45 @@ def tobs():
 
     most_active_station = 'USC00519281'
 
-    session = Session(engine)
-
     previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
+
+    session = Session(engine)
 
     most_active_data = session.query(measurement.date, measurement.tobs).\
         filter(measurement.date >= previous_year).\
         filter(measurement.station == most_active_station).all()
 
-    most_active_list = []
+    most_active_temp_list = []
     for d, t in most_active_data:
         most_active_temp_data = {}
         most_active_temp_data[d] = t
-        most_active_list.append(most_active_temp_data)
+        most_active_temp_list.append(most_active_temp_data)
 
-    return jsonify(most_active_list)
+    return jsonify(most_active_temp_list)
 
 # Start Date
+
+@app.route("/api/v1.0/<start>")
+def start_from(start):
+    """Temperature observations from Date entered."""
+    
+    session = Session(engine)
+
+    tobs_from = session.query(measurement.date, measurement.tobs(func.min),\
+                              measurement.tobs(func.mean),\
+                                measurement.tobs(func.max).\
+                                filter(measurement.date >= start))
+
+    tobs_from_list = []
+    for d, min, avg, max in tobs_from:
+        tobs_from_data = {}
+        tobs_from_data["Date"] = d
+        tobs_from_data["Minimum Temperature"] = min
+        tobs_from_data["Average Temperature"] = avg
+        tobs_from_data["Maximum Temperature"] = max
+        tobs_from_list.append(tobs_from_data)
+
+    return jsonify(tobs_from_list)
 
 # Start and End Date
 
