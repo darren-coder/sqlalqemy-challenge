@@ -55,14 +55,11 @@ def precipitation():
 
     session = Session(engine)
 
-    most_recent = session.query(measurement.date).\
-    order_by(measurement.date.desc()).first()
-    
     previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
     
     precip = session.query(measurement.date, measurement.prcp).\
-    filter(measurement.date >= previous_year).\
-    order_by(measurement.date).all()
+        filter(measurement.date >= previous_year).\
+        order_by(measurement.date).all()
 
     session.close()
 
@@ -92,6 +89,33 @@ def stations():
         all_stations.append(station_dict)
 
     return jsonify(all_stations)
+
+# Dates and temperature observations/ Most active station, previous year
+
+@app.route("/api/v1.0/tobs")
+def tobs():
+
+    most_active_station = 'USC00519281'
+
+    session = Session(engine)
+
+    previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
+
+    most_active_data = session.query(measurement.date, measurement.tobs).\
+        filter(measurement.date >= previous_year).\
+        filter(measurement.station == most_active_station).all()
+
+    most_active_list = []
+    for d, t in most_active_data
+        most_active_temp_data = {}
+        most_active_temp_data[d] = t
+        most_active_list.append(most_active_temp_data)
+
+    return jsonify(most_active_list)
+
+# Start Date
+
+# Start and End Date
 
 
 if __name__ == "__main__":
