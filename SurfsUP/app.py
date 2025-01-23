@@ -126,7 +126,7 @@ def start_from(start):
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
                                 filter(measurement.date >= start).\
-                                group_by(measurement_date)
+                                group_by(measurement.date)
 
     tobs_from_list = []
     for d, min, avg, max in tobs_from:
