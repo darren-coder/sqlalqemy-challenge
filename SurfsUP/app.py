@@ -133,7 +133,7 @@ def start_from(start):
         tobs_from_data = {}
         tobs_from_data["Date"] = d
         tobs_from_data["Minimum Temperature"] = min
-        tobs_from_data["Average Temperature"] = avg
+        tobs_from_data["Average Temperature"] = round(avg, 2)
         tobs_from_data["Maximum Temperature"] = max
         tobs_from_list.append(tobs_from_data)
 
