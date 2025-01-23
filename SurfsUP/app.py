@@ -121,10 +121,12 @@ def start_from(start):
     
     session = Session(engine)
 
-    tobs_from = session.query(measurement.date, measurement.tobs(func.min),\
-                              measurement.tobs(func.mean),\
-                                measurement.tobs(func.max).\
-                                filter(measurement.date >= start))
+    tobs_from = session.query(measurement.date, 
+                              func.min(measurement.tobs),\
+                              func.avg(measurement.tobs),\
+                                func.max(measurement.tobs)).\
+                                filter(measurement.date >= start).\
+                                group_by(measurement_date)
 
     tobs_from_list = []
     for d, min, avg, max in tobs_from:
