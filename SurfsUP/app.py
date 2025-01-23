@@ -106,7 +106,7 @@ def tobs():
         filter(measurement.station == most_active_station).all()
 
     most_active_list = []
-    for d, t in most_active_data
+    for d, t in most_active_data:
         most_active_temp_data = {}
         most_active_temp_data[d] = t
         most_active_list.append(most_active_temp_data)
