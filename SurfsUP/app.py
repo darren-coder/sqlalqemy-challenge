@@ -57,13 +57,8 @@ def precipitation():
 
     most_recent = session.query(measurement.date).\
     order_by(measurement.date.desc()).first()
-    #str_recent = most_recent[0]
+    
     previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
-
-    most_recent_date = dt.datetime.strptime(str_recent, '%Y-%m-%d').date()
-
-    one_year = most_recent_date - dt.timedelta(days=365)
-
     
     precip = session.query(measurement.date, measurement.prcp).\
     filter(measurement.date >= previous_year).\
@@ -73,7 +68,7 @@ def precipitation():
 
     all_measures = []
     for d, p in precip:
-        #last_12_mo_precip = {} # don't need
+        last_12_mo_precip = {}
         last_12_mo_precip[d] = p
         all_measures.append(last_12_mo_precip)
 
@@ -97,9 +92,6 @@ def stations():
         all_stations.append(station_dict)
 
     return jsonify(all_stations)
-
-
-
 
 
 if __name__ == "__main__":
