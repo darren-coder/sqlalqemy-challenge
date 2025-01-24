@@ -115,8 +115,8 @@ def tobs():
 
 # Start Date
 
-@app.route("/api/v1.0/<start>")
-def start_from(start):
+@app.route("/api/v1.0/start_date<start_date>")
+def start_from(start_date):
     """Temperature observations from Date entered."""
     
     session = Session(engine)
@@ -135,7 +135,7 @@ def start_from(start):
         tobs_from_data = {}
         tobs_from_data["Date"] = d
         tobs_from_data["Minimum Temperature"] = min
-        tobs_from_data["Average Temperature"] = round(avg, 2)
+        tobs_from_data["Average Temperature"] = round(avg, 1)
         tobs_from_data["Maximum Temperature"] = max
         tobs_from_list.append(tobs_from_data)
 
@@ -143,8 +143,8 @@ def start_from(start):
 
 # Start and End Date
 
-@app.route("/api/v1.0/<start>/<end>")
-def start_end(start, end):
+@app.route("/api/v1.0/start_date/end_date/<start_date>/<end_date>")
+def start_end(start_date, end_date):
     
     session = Session(engine)
 
@@ -163,7 +163,7 @@ def start_end(start, end):
         tabs_from_to_list.append({
             "Date": date,
             "Minimum Temperature": min,
-            "Average Temperature": avg,
+            "Average Temperature": round(avg, 1)
             "Maximum Temperature": max
         })
 
