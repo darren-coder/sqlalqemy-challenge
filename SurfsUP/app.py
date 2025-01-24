@@ -160,7 +160,7 @@ def start_end(start_date, end_date):
 
     tobs_from_to_list = []
     for date, min, avg, max in tobs_from_to:
-        tabs_from_to_list.append({
+        tobs_from_to_list.append({
             "Date": date,
             "Minimum Temperature": min,
             "Average Temperature": round(avg, 1)
