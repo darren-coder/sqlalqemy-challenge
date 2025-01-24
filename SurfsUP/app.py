@@ -44,8 +44,8 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end>"
+        f"/api/v1.0/start_date/<start_date><br/>"
+        f"/api/v1.0/start_date/end_date/<start_date>/<end_date>"
     )
 
 # Precipitation analysis
@@ -115,7 +115,7 @@ def tobs():
 
 # Start Date
 
-@app.route("/api/v1.0/start_date<start_date>")
+@app.route("/api/v1.0/start_date/<start_date>")
 def start_from(start_date):
     """Temperature observations from Date entered."""
     
@@ -125,7 +125,7 @@ def start_from(start_date):
                               func.min(measurement.tobs),\
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
-                                filter(measurement.date >= start).\
+                                filter(measurement.date >= start_date).\
                                 group_by(measurement.date)
 
     session.close()
@@ -152,8 +152,8 @@ def start_end(start_date, end_date):
                               func.min(measurement.tobs),\
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
-                                filter(measurement.date >= start).\
-                                filter(measurement.date <= end).\
+                                filter(measurement.date >= start_date).\
+                                filter(measurement.date <= end_date).\
                                 group_by(measurement.date).all()
 
     session.close()
@@ -163,7 +163,7 @@ def start_end(start_date, end_date):
         tobs_from_to_list.append({
             "Date": date,
             "Minimum Temperature": min,
-            "Average Temperature": round(avg, 1)
+            "Average Temperature": round(avg, 1),
             "Maximum Temperature": max
         })
 
