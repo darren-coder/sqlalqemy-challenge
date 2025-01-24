@@ -144,7 +144,7 @@ def start_from(start):
 # Start and End Date
 
 @app.route("/api/v1.0/<start>/<end>")
-def start_end(start/end):
+def start_end((start)/(end)):
     
     session = Session(engine)
 
