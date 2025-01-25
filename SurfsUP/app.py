@@ -44,7 +44,9 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
+        f"Enter a start date to retrieve tobs information<br/>"
         f"/api/v1.0/start_date/<start_date><br/>"
+        f"Enter start date/end date for tobs information<br/>"
         f"/api/v1.0/start_date/end_date/<start_date>/<end_date>"
     )
 
