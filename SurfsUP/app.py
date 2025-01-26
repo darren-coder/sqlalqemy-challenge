@@ -157,8 +157,8 @@ def start_end(start_date, end_date):
                               func.min(measurement.tobs),\
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
-                                filter(measurement.date <= end_date).\
                                 filter(measurement.date >= start_date).\
+                                filter(measurement.date <= end_date).\
                                 group_by(measurement.date)
 
 
