@@ -132,6 +132,8 @@ def start_from(start_date):
 
     session.close()
 
+    print(tobs_from)
+
     tobs_from_list = []
     for d, min, avg, max in tobs_from:
         tobs_from_data = {}
@@ -141,6 +143,7 @@ def start_from(start_date):
         tobs_from_data["Maximum Temperature"] = max
         tobs_from_list.append(tobs_from_data)
 
+    print(tobs_from_list)
     return jsonify(tobs_from_list)
 
 # Start and End Date
@@ -150,21 +153,21 @@ def start_end(start_date, end_date):
     
     session = Session(engine)
 
-    tobs_from_to = session.query(measurement.date, 
+    tobs_from = session.query(measurement.date, 
                               func.min(measurement.tobs),\
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
-                                filter(measurement.date >= start_date).\
                                 filter(measurement.date <= end_date).\
-                                filter(measurement.tobs.isnot(None)).\
-                                group_by(measurement.date).all()
+                                filter(measurement.date >= start_date).\
+                                group_by(measurement.date)
+
 
     session.close()
 
-    print(tobs_from_to)
+    print(tobs_from)
 
     tobs_from_to_list = []
-    for d, min, avg, max in tobs_from_to:
+    for d, min, avg, max in tobs_from:
         tobs_from_data = {}
         tobs_from_data["Date"] = d
         tobs_from_data["Minimum Temperature"] = min
@@ -172,7 +175,7 @@ def start_end(start_date, end_date):
         tobs_from_data["Maximum Temperature"] = max
         tobs_from_to_list.append(tobs_from_data)
 
-    print(tobs_from_to_list)
+    print(tobs_from)
 
     return jsonify(tobs_from_to_list)
 
