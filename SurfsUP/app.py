@@ -175,7 +175,7 @@ def start_end(start_date, end_date):
         tobs_from_data["Maximum Temperature"] = max
         tobs_from_to_list.append(tobs_from_data)
 
-    print(tobs_from)
+    
 
     return jsonify(tobs_from_to_list)
 
