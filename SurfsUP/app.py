@@ -4,7 +4,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from flask import Flask, jsonify
 from sqlalchemy import create_engine, func
-import datetime as dt
+from datetime import datetime
 
 #################################################
 # Database Setup
@@ -60,7 +60,7 @@ def precipitation():
     
     session = Session(engine)
 
-    previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
+    previous_year = datetime.date(2017,8,23) - datetime.timedelta(days=365)
     
     precip = session.query(measurement.date, measurement.prcp).\
         filter(measurement.date >= previous_year).\
@@ -104,7 +104,7 @@ def tobs():
     
     most_active_station = 'USC00519281'
 
-    previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
+    previous_year = datetime.date(2017,8,23) - datetime.timedelta(days=365)
 
     session = Session(engine)
 
@@ -126,7 +126,7 @@ def tobs():
 def start_from(start_date):
     """Temperature observations from Date entered."""
     
-    start_object = dt.strptime(start_date, "%Y-%m-%d").date()
+    start_object = datetime.strptime(start_date, "%Y-%m-%d").date()
     print(start_object)
 
     session = Session(engine)
@@ -161,8 +161,8 @@ def start_end(start_date, end_date):
     """Temperature observations within given date range"""
 
 
-    start_object = dt.strptime(start_date, "%Y-%m-%d").date()
-    end_object = dt.strptime(end_date, "%Y-%m-%d").date()
+    start_object = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end_object = datetime.strptime(end_date, "%Y-%m-%d").date()
     print(start_object)
     print(end_object)
     
