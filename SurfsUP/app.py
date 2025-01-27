@@ -44,9 +44,11 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"Enter a start date to retrieve tobs information<br/>"
+        f"Enter a start date after url below to retrieve tobs information<br/>"
+        f"Format: '/YYYY-MM-DD' "
         f"/api/v1.0/start_date/<start_date><br/>"
-        f"Enter start date/end date for tobs information<br/>"
+        f"Enter start date/end date after url below for tobs information<br/>"
+        f"Format: '/YYYY-MM-DD/YYYY-MM-DD' "
         f"/api/v1.0/start_date/end_date/<start_date>/<end_date>"
     )
 
@@ -54,7 +56,8 @@ def welcome():
  
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-
+    """Previous year of temperature observations."""
+    
     session = Session(engine)
 
     previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
@@ -77,7 +80,8 @@ def precipitation():
 
 @app.route("/api/v1.0/stations")
 def stations():
-
+    """List of stations."""
+    
     session = Session(engine)
 
     list_stations = session.query(station.station, station.name).all()
@@ -92,11 +96,12 @@ def stations():
 
     return jsonify(all_stations)
 
-# Dates and temperature observations/ Most active station, previous year
+# Dates and temperature observations/ Most active station, previous year.
 
 @app.route("/api/v1.0/tobs")
 def tobs():
-
+    """Previous year of temperature observations from busiest station."""
+    
     most_active_station = 'USC00519281'
 
     previous_year = dt.date(2017,8,23) - dt.timedelta(days=365)
@@ -115,19 +120,22 @@ def tobs():
 
     return jsonify(most_active_temp_list)
 
-# Start Date
+# Start Date temperature observations.
 
 @app.route("/api/v1.0/start_date/<start_date>")
 def start_from(start_date):
     """Temperature observations from Date entered."""
     
+    start_object = dt.strptime(start_date, "%Y-%m-%d").date()
+    print(start_object)
+
     session = Session(engine)
 
     tobs_from = session.query(measurement.date, 
                               func.min(measurement.tobs),\
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
-                                filter(measurement.date >= start_date).\
+                                filter(measurement.date >= start_object).\
                                 group_by(measurement.date)
 
     session.close()
@@ -146,13 +154,17 @@ def start_from(start_date):
     print(tobs_from_list)
     return jsonify(tobs_from_list)
 
-# Start and End Date
+# Start and End Date temperature observations.
 
 @app.route("/api/v1.0/start_date/end_date/<start_date>/<end_date>")
 def start_end(start_date, end_date):
+    """Temperature observations within given date range"""
 
-    print(start_date)
-    print(end_date)
+
+    start_object = dt.strptime(start_date, "%Y-%m-%d").date()
+    end_object = dt.strptime(end_date, "%Y-%m-%d").date()
+    print(start_object)
+    print(end_object)
     
     session = Session(engine)
 
@@ -160,9 +172,10 @@ def start_end(start_date, end_date):
                               func.min(measurement.tobs),\
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
-                                filter(measurement.date >= start_date).\
+                                filter(measurement.date >= start_object).\
+                                filter(measurement.date <= end_object).\
                                 group_by(measurement.date).all()
-#measurement.date <= end_date).\
+
     session.close()
 
     print(tobs_from)
