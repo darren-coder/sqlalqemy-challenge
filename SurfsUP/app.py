@@ -44,11 +44,11 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"Enter a start date after url below to retrieve tobs information<br/>"
-        f"Format: '/YYYY-MM-DD' "
+        f"Enter a start date after url below to retrieve tobs information "
+        f"using format: '/YYYY-MM-DD'<br/>"
         f"/api/v1.0/start_date/<start_date><br/>"
-        f"Enter start date/end date after url below for tobs information<br/>"
-        f"Format: '/YYYY-MM-DD/YYYY-MM-DD' "
+        f"Enter start date/end date after url below for tobs information "
+        f"using this format: '/YYYY-MM-DD/YYYY-MM-DD'<br/>"
         f"/api/v1.0/start_date/end_date/<start_date>/<end_date>"
     )
 
