@@ -23,7 +23,7 @@ station = Base.classes.station
 measurement = Base.classes.measurement
 
 # Create our session (link) from Python to the DB
-session = Session(engine)
+#session = Session(engine)
 
 #################################################
 # Flask Setup
@@ -151,8 +151,8 @@ def start_from(start_date):
 @app.route("/api/v1.0/start_date/end_date/<start_date>/<end_date>")
 def start_end(start_date, end_date):
 
-    start_date = dt.strptime(start_date, '%Y-%m-%d')
-    end_date = dt.strptime(end_date, '%Y-%m-%d')
+    print(start_date)
+    print(end_date)
     
     session = Session(engine)
 
@@ -161,10 +161,8 @@ def start_end(start_date, end_date):
                               func.avg(measurement.tobs),\
                                 func.max(measurement.tobs)).\
                                 filter(measurement.date >= start_date).\
-                                filter(measurement.date <= end_date).\
-                                group_by(measurement.date)
-
-
+                                group_by(measurement.date).all()
+#measurement.date <= end_date).\
     session.close()
 
     print(tobs_from)
