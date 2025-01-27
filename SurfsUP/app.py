@@ -150,6 +150,9 @@ def start_from(start_date):
 
 @app.route("/api/v1.0/start_date/end_date/<start_date>/<end_date>")
 def start_end(start_date, end_date):
+
+    start_date = dt.strptime(start_date, '%Y-%m-%d')
+    end_date = dt.strptime(end_date, '%Y-%m-%d')
     
     session = Session(engine)
 
