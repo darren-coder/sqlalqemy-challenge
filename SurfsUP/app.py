@@ -176,7 +176,7 @@ def start_end(start_date, end_date):
     filter(measurement.date >= start_object,
             measurement.date <= end_object).all() 
 
-    print(tobs_from)
+    print(tobs_from_to)
 
     session.close()
 
