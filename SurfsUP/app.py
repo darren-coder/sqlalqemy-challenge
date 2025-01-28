@@ -168,26 +168,28 @@ def start_end(start_date, end_date):
     
     session = Session(engine)
 
-    tobs_from = session.query(measurement.date, 
-                              func.min(measurement.tobs),\
-                              func.avg(measurement.tobs),\
-                                func.max(measurement.tobs)).\
-                                filter(measurement.date >= start_object).\
-                                filter(measurement.date <= end_object).\
-                                group_by(measurement.date).all()
-
-    session.close()
+    tobs_from_to = session.query( 
+    measurement.date,
+    func.min(measurement.tobs).label('min_1'),
+    func.avg(measurement.tobs).label('avg_1'),
+    func.max(measurement.tobs).label('max_1')).\
+    filter(measurement.date >= start_object,
+            measurement.date <= end_object).all() 
 
     print(tobs_from)
 
+    session.close()
+
+    
+
     tobs_from_to_list = []
     for d, min, avg, max in tobs_from:
-        tobs_from_data = {}
-        tobs_from_data["Date"] = d
-        tobs_from_data["Minimum Temperature"] = min
-        tobs_from_data["Average Temperature"] = round(avg, 1)
-        tobs_from_data["Maximum Temperature"] = max
-        tobs_from_to_list.append(tobs_from_data)
+        tobs_from_to_data = {}
+        tobs_from_to_data["Date"] = d
+        tobs_from_to_data["Minimum Temperature"] = min
+        tobs_from_to_data["Average Temperature"] = round(avg, 1)
+        tobs_from_to_data["Maximum Temperature"] = max
+        tobs_from_to_list.append(tobs_from_to_data)
 
     
 
