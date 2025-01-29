@@ -4,7 +4,6 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from flask import Flask, jsonify
 from sqlalchemy import create_engine, func
-from datetime import datetime
 
 #################################################
 # Database Setup
@@ -54,8 +53,13 @@ def welcome():
 def precipitation():
     """Previous year of temperature observations."""
     
+    # import datetime
+    
+    import datetime
+
     # Select Dates    
-    previous_year = datetime.date(2017,8,23) - datetime.date(days=365)
+    
+    previous_year = datetime.date(2017,8,23) - datetime.timedelta(days=365)
     
     # Open session / make query / close session
 
@@ -67,7 +71,7 @@ def precipitation():
 
     session.close()
 
-    # 
+    # create and return jsonify list
 
     all_measures = []
     for d, p in precip:
@@ -83,12 +87,16 @@ def precipitation():
 def stations():
     """List of stations."""
     
+    # Session and Query
+
     session = Session(engine)
 
     list_stations = session.query(station.station, station.name).all()
     
     session.close()
-    
+
+    # Create list and return jsonify to url
+
     all_stations = []
     for s, n in list_stations:
         station_dict = {}
@@ -102,10 +110,17 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tobs():
     """Previous year of temperature observations from busiest station."""
+    # import datetime
     
+    import datetime
+
+    # Set variables
+
     most_active_station = 'USC00519281'
 
     previous_year = datetime.date(2017,8,23) - datetime.timedelta(days=365)
+
+    # Session and Query
 
     session = Session(engine)
 
@@ -114,6 +129,8 @@ def tobs():
         filter(measurement.station == most_active_station).all()
 
     session.close()
+
+    # Create list and return jsonify to url.
 
     most_active_temp_list = []
     for d, t in most_active_data:
@@ -128,9 +145,17 @@ def tobs():
 @app.route("/api/v1.0/start_date/<start_date>")
 def start_from(start_date):
     """Temperature observations from Date entered."""
-    
+
+    # import datetime
+
+    from datetime import datetime
+
+    # Set variable for date
+
     start_object = datetime.strptime(start_date, "%Y-%m-%d").date()
     print(start_object)
+
+    # Session and Query
 
     session = Session(engine)
 
@@ -143,7 +168,7 @@ def start_from(start_date):
     
     session.close()
 
-    print(start)
+    # Create list and return jsonify to url.
 
     tobs_from_list = []
     for min, avg, max in start:
@@ -161,11 +186,19 @@ def start_from(start_date):
 def start_end(start_date, end_date):
     """Temperature observations within given date range"""
 
+    # import datetime
+
+    from datetime import datetime
+
+    # Set variables for dates.
+
     start_object = datetime.strptime(start_date, "%Y-%m-%d").date()
     end_object = datetime.strptime(end_date, "%Y-%m-%d").date()
     print(start_object)
     print(end_object)
     
+    # Session and Query.
+
     session = Session(engine)
 
     sel =  [func.min((measurement.tobs).label('Minimum Temp')),
@@ -177,6 +210,8 @@ def start_end(start_date, end_date):
                measurement.date <= end_object).all()
     
     session.close()
+
+    # Create list and return jsonify to url.
     
     tobs_from_to_list = []
     for  min, avg, max in start_to_end:
@@ -187,6 +222,8 @@ def start_end(start_date, end_date):
         tobs_from_to_list.append(tobs_from_to_data)
 
     return jsonify(tobs_from_to_list)
+
+# Entry point check
 
 if __name__ == "__main__":
     app.run(debug=True)
