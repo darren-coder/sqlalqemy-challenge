@@ -4,12 +4,11 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from flask import Flask, jsonify
 from sqlalchemy import create_engine, func
-from datetime import datetime, strptime
+from datetime import datetime
 
 #################################################
 # Database Setup
 #################################################
-
 
 # reflect an existing database into a new model
 engine = create_engine("sqlite:///../Resources/hawaii.sqlite")
@@ -56,7 +55,7 @@ def precipitation():
     """Previous year of temperature observations."""
     
     # Select Dates    
-    previous_year = datetime.datetime(2017,8,23) - datetime.timedelta(days=365)
+    previous_year = datetime.date(2017,8,23) - datetime.date(days=365)
     
     # Open session / make query / close session
 
